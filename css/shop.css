@@ -1,0 +1,402 @@
+/* shop.css - Enhanced Shop Styles */
+/* Import Base Variables */
+@import url('style.css');
+
+/* Shop Header with Animated Underline */
+.shop-header {
+  text-align: center;
+  margin: 4rem 0;
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.shop-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--accent-gold), 
+    transparent);
+  border-radius: 2px;
+  animation: pulseUnderline 2.5s infinite ease-in-out;
+}
+
+@keyframes pulseUnderline {
+  0%, 100% { width: 150px; opacity: 0.7; }
+  50% { width: 200px; opacity: 1; }
+}
+
+/* Enhanced Category Tabs */
+.category-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.category-tab {
+  padding: 0.8rem 2rem;
+  background: var(--card-bg);
+  border-radius: 50px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 2px solid var(--card-border);
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-tab::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 215, 0, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.category-tab:hover {
+  color: var(--text-light);
+  border-color: var(--accent-gold);
+  transform: translateY(-3px);
+}
+
+.category-tab:hover::before {
+  left: 100%;
+}
+
+.category-tab.active {
+  background: linear-gradient(135deg, 
+    var(--realm-purple), 
+    var(--purple-dark));
+  color: white;
+  border-color: var(--accent-gold);
+  box-shadow: 0 8px 25px rgba(106, 13, 173, 0.5);
+}
+
+/* 3D Product Grid */
+.product-section {
+  margin-bottom: 5rem;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.8rem;
+  display: inline-block;
+  position: relative;
+  color: var(--accent-gold);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--accent-gold), 
+    rgba(255, 215, 0, 0.3));
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2.5rem;
+  perspective: 1000px;
+}
+
+/* Holographic Product Card */
+.product-card {
+  background: linear-gradient(
+    135deg,
+    var(--card-bg) 0%,
+    var(--darker-bg) 100%
+  );
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(106, 13, 173, 0.3);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.05) 0%,
+    rgba(106, 13, 173, 0.05) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.product-card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 0 20px 50px rgba(106, 13, 173, 0.4);
+  border-color: var(--accent-gold);
+}
+
+.product-card:hover::after {
+  opacity: 1;
+}
+
+/* Product Badges with Float Effect */
+.product-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  z-index: 2;
+  animation: float 4s ease-in-out infinite;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.badge-zmc {
+  background-color: var(--accent-gold);
+  color: #000;
+  box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+}
+
+.badge-kit {
+  background-color: var(--realm-purple);
+  color: white;
+  box-shadow: 0 5px 20px rgba(106, 13, 173, 0.4);
+}
+
+.badge-rank {
+  background-color: var(--success-green);
+  color: white;
+  box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* Product Image Zoom Effect */
+.product-image-container {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.1) rotate(1deg);
+}
+
+/* Product Info Section */
+.product-info {
+  padding: 1.8rem;
+  position: relative;
+  z-index: 2;
+}
+
+.product-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+}
+
+.product-name::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: var(--accent-gold);
+  transition: width 0.3s ease;
+}
+
+.product-card:hover .product-name::after {
+  width: 80px;
+}
+
+.product-desc {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 1.8rem;
+  line-height: 1.7;
+}
+
+/* Price with Gold Glow */
+.product-price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.8rem;
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.product-price::before {
+  content: 'Rp';
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+/* Animated Buy Button */
+.buy-button {
+  width: 100%;
+  padding: 1.2rem;
+  background: linear-gradient(
+    135deg,
+    var(--realm-purple),
+    var(--purple-dark)
+  );
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.buy-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.buy-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(106, 13, 173, 0.6);
+  background: linear-gradient(
+    135deg,
+    var(--purple-dark),
+    var(--realm-purple)
+  );
+}
+
+.buy-button:hover::before {
+  left: 100%;
+}
+
+.buy-button i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.buy-button:hover i {
+  transform: translateX(5px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .shop-header {
+    margin: 3rem 0;
+  }
+  
+  .category-tabs {
+    gap: 0.8rem;
+  }
+  
+  .category-tab {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .product-info {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.6rem;
+  }
+  
+  .buy-button {
+    padding: 1rem;
+  }
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

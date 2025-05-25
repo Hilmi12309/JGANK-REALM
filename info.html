@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JGANK Realm - Info</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Minecraft&family=Montserrat:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        /* Additional Styles for Info Page */
+        .realm-info-section {
+            margin-top: 2rem;
+        }
+        
+        .info-card {
+            background-color: var(--obsidian);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .info-item {
+            background-color: rgba(138, 43, 226, 0.1);
+            border-left: 4px solid var(--realm-purple);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .realm-code-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .realm-code {
+            font-family: 'Minecraft', monospace;
+            background-color: #2d2d2d;
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            position: relative;
+            flex-grow: 1;
+        }
+        
+        .copy-btn {
+            background-color: var(--realm-purple);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            box-shadow: 0 4px 8px rgba(138, 43, 226, 0.3);
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--realm-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(138, 43, 226, 0.4);
+        }
+        
+        .join-realm-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background-color: var(--accent-gold);
+            color: #FFFFFF;
+            padding: 1.2rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+            width: fit-content;
+        }
+        
+        .join-realm-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(255, 215, 0, 0.4);
+            background-color: #ffea00;
+        }
+        
+        .portal-icon {
+            width: 28px;
+            height: 28px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23000"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>');
+            background-size: contain;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .team-member {
+            background-color: rgba(138, 43, 226, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .member-role {
+            color: var(--accent-gold);
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .rules-list {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .rules-list li {
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+        
+        .rules-list li::before {
+            content: "•";
+            color: var(--accent-gold);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        /* New Button Styles */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background-color: #25D366;
+            color: white;
+            padding: 1.2rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 211, 102, 0.4);
+        }
+        
+        .whatsapp-icon {
+            width: 24px;
+            height: 24px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>');
+            background-size: contain;
+        }
+        
+        .support-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background-color: var(--realm-purple);
+            color: white;
+            padding: 1rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(138, 43, 226, 0.3);
+        }
+        
+        .support-btn:hover {
+            background-color: var(--realm-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(138, 43, 226, 0.4);
+        }
+        
+        .support-icon {
+            width: 20px;
+            height: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
+            background-size: contain;
+        }
+        
+        .team-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <div class="typing-container">
+                    <div class="typing-text">JGANK REALM</div>
+                </div>
+            </div>
+            
+            <button class="hamburger" aria-label="Toggle Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <div class="nav-links">
+                <a href="homepage.html" class="nav-link">Beranda</a>
+                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="info.html" class="nav-link active">Info</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <header class="hero-section">
+                <h1 class="hero-title">Info <span>JGANK REALM</span></h1>
+                <p class="hero-subtitle">Semua yang perlu kamu ketahui tentang realm kami</p>
+                <div class="hero-decoration">
+                    <div class="decoration-circle gold"></div>
+                    <div class="decoration-circle purple"></div>
+                </div>
+            </header>
+
+            <!-- Realm Info Section -->
+            <section class="realm-info-section">
+                <div class="info-card">
+                    <h2 class="section-title">Tentang JGANK REALM</h2>
+                    <div class="divider gold"></div>
+                    <p>JGANK REALM adalah Minecraft Bedrock Realm dengan berbagai fitur unik dan komunitas yang aktif. Realm ini dibuat untuk memberikan pengalaman bermain Minecraft yang berbeda dengan addon custom, ekonomi yang dinamis, dan event-event seru.</p>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <h3>Versi Minecraft</h3>
+                            <p>Bedrock Edition (1.21.80+)</p>
+                        </div>
+                        <div class="info-item">
+                            <h3>Jenis Realm</h3>
+                            <p>Survival dengan Economy</p>
+                        </div>
+                        <div class="info-item">
+                            <h3>Dibuka Sejak</h3>
+                            <p>Mei 2025</p>
+                        </div>
+                        <div class="info-item">
+                            <h3>Status</h3>
+                            <p>Aktif 24/7</p>
+                        </div>
+                    </div>
+                    
+                    <!-- WhatsApp Community Button -->
+                    <div class="button-group">
+                        <a href="https://chat.whatsapp.com/[link-grup-wa]" class="whatsapp-btn" target="_blank">
+                            <span class="whatsapp-icon"></span>
+                            WhatsApp Komunitas
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Join Realm Section -->
+                <div class="info-card">
+                    <h2 class="section-title">Cara Bergabung</h2>
+                    <div class="divider gold"></div>
+                    <p>Untuk bergabung dengan JGANK REALM, ikuti langkah-langkah berikut:</p>
+                    
+                    <ol style="margin: 1.5rem 0; padding-left: 1.5rem;">
+                        <li>Buka Minecraft Bedrock Edition di perangkat Anda</li>
+                        <li>Pilih menu "Play" kemudian "Friends"</li>
+                        <li>Klik tab "Join Realm"</li>
+                        <li>Masukkan kode realm berikut:</li>
+                    </ol>
+                    
+                    <div class="realm-code-container">
+                        <div class="realm-code" id="realmCode">Es8z4_mwzMqsBAw</div>
+                        <button class="copy-btn" id="copyBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Salin
+                        </button>
+                    </div>
+                    
+                    <p>Atau klik tombol di bawah ini untuk langsung bergabung:</p>
+                    
+                    <a href="https://realms.gg/Es8z4_mwzMqsBAw" class="join-realm-btn" target="_blank">
+                        <span class="portal-icon"></span>
+                        Masuk ke JGANK REALM
+                    </a>
+                </div>
+                
+                <!-- Team Section -->
+                <div class="info-card">
+                    <h2 class="section-title">Tim Kami</h2>
+                    <div class="divider gold"></div>
+                    <p>Berikut adalah tim di balik JGANK REALM:</p>
+                    
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <h3>Nerva17</h3>
+                            <div class="member-role">Pemilik Realm</div>
+                            <p>Bertanggung jawab atas pengelolaan realm dan komunitas</p>
+                            <div class="team-actions">
+                                <a href="https://saweria.co/NERVA17" class="support-btn" target="_blank">
+                                    <span class="support-icon"></span>
+                                    Support Owner
+                                </a>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <h3>JGANK Team</h3>
+                            <div class="member-role">Admin & Moderator</div>
+                            <p>Menjaga ketertiban dan membantu pemain</p>
+                        </div>
+                        <div class="team-member">
+                            <h3>Velodrax</h3>
+                            <div class="member-role">Pengembang Website</div>
+                            <p>Membuat dan mengelola website JGANK REALM</p>
+                            <div class="team-actions">
+                                <a href="https://saweria.co/Velodrax" class="support-btn" target="_blank">
+                                    <span class="support-icon"></span>
+                                    Support WebDev
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rules Section -->
+                <div class="info-card">
+                    <h2 class="section-title">Peraturan Realm</h2>
+                    <div class="divider gold"></div>
+                    <p>Untuk menjaga kenyamanan bermain, harap patuhi peraturan berikut:</p>
+                    
+                    <ul class="rules-list">
+                        <li>Dilarang menggunakan cheat atau mod yang memberikan keuntungan tidak fair</li>
+                        <li>Dilarang griefing (merusak bangunan orang lain tanpa izin)</li>
+                        <li>Dilarang mencuri barang pemain lain</li>
+                        <li>Gunakan chat dengan sopan dan tidak spam</li>
+                        <li>Hargai pemain lain dan jaga sikap</li>
+                        <li>Pelanggaran akan berakibat pada banned dari realm</li>
+                    </ul>
+                </div>
+                
+                <!-- FAQ Section -->
+                <div class="info-card">
+                    <h2 class="section-title">Pertanyaan Umum</h2>
+                    <div class="divider gold"></div>
+                    
+                    <div class="info-item" style="margin-bottom: 1.5rem;">
+                        <h3>Bagaimana cara mendapatkan ZMC?</h3>
+                        <p>ZMC bisa didapatkan dengan menjual barang ke shop realm atau membeli di halaman Shop website kami.</p>
+                    </div>
+                    
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="typing-container">
+                    <div class="typing-text">JGANK REALM</div>
+                </div>
+            </div>
+            
+            <div class="footer-info">
+                <p class="footer-copyright">© 2023 JGANK REALM. Hak cipta dilindungi.</p>
+                <p class="footer-disclaimer">Tidak berafiliasi dengan Mojang atau Microsoft.</p>
+            </div>
+            
+            <div class="footer-social">
+                <a href="https://discord.gg/q4SvkRf4EJ" class="social-link" aria-label="Discord" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                        <path fill="currentColor" d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.17.17 0 0 0-.15.07c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09a.17.17 0 0 0-.15-.07c-1.5.26-2.93.71-4.27 1.33a.15.15 0 0 0-.08.1C2.53 10.46 2 15.6 2 15.6a.16.16 0 0 0 .06.12c1.44 1.06 3.05 1.65 4.66 1.85a.16.16 0 0 0 .16-.06c.39-.55.74-1.13 1.06-1.74a.16.16 0 0 0-.09-.22 5.63 5.63 0 0 1-.81-.33.16.16 0 0 1-.02-.24c.11-.08.22-.17.32-.25a.16.16 0 0 1 .17-.02c3.44 1.57 7.15 1.57 10.55 0a.16.16 0 0 1 .17.02l.32.25a.16.16 0 0 1-.02.24 5.71 5.71 0 0 1-.81.33.16.16 0 0 0-.09.22c.32.61.67 1.19 1.06 1.74a.16.16 0 0 0 .16.06c1.61-.2 3.22-.79 4.66-1.85a.16.16 0 0 0 .06-.12s-.53-5.14-1.93-10.17a.15.15 0 0 0-.08-.1zM8.01 14.33c-.99 0-1.81-.9-1.81-2s.8-2 1.81-2 1.82.9 1.82 2-.82 2-1.82 2zm7.99 0c-.99 0-1.81-.9-1.81-2s.8-2 1.81-2 1.82.9 1.82 2-.82 2-1.82 2z"/>
+                    </svg>
+                    <span class="social-tooltip">Join Our Guild</span>
+                </a>
+
+                <a href="https://instagram.com/erva17_id?igshid=YmMyMTA2M2Y=" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="18" cy="6" r="1" fill="currentColor"/>
+                    </svg>
+                    <span class="social-tooltip">Follow Our Journey</span>
+                </a>
+
+                <a href="https://youtube.com/@nerva17id?si=kINILyHo5zc1Cfmi" class="social-link" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                        <path fill="currentColor" d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+                        <polygon fill="var(--dark-oak)" points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+                    </svg>
+                    <span class="social-tooltip">Watch Our Tales</span>
+                </a>
+
+                <a href="https://chat.whatsapp.com/[link-grup-wa]" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                        <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    <span class="social-tooltip">Join Our Community</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Copy Realm Code Functionality
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const realmCode = document.getElementById('realmCode').textContent;
+            navigator.clipboard.writeText(realmCode).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg> Disalin!';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Gagal menyalin teks: ', err);
+            });
+        });
+    </script>
+</body>
+</html>

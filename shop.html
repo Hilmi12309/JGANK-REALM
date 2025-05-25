@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JGANK REALM - Shop</title>
+    <link rel="stylesheet" href="css/shop.css">
+    <style>
+        :root {
+            --dark-stone: #2c2c2c;
+            --stone: #3a3a3a;
+            --light-stone: #5a5a5a;
+            --wood: #8B4513;
+            --light-wood: #A0522D;
+            --accent-gold: #D4AF37;
+            --text-light: #f8f9fa;
+            --success: #4a8f29;
+            --danger: #8B0000;
+        }
+        
+        /* Base Styles */
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: var(--dark-stone);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: var(--stone);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--wood);
+        }
+        
+        .navbar h4 {
+            margin: 0;
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: var(--stone);
+            width: 200px;
+            border-left: 3px solid var(--wood);
+            border-bottom: 3px solid var(--wood);
+            z-index: 100;
+        }
+        
+        .nav-links.active {
+            display: flex;
+        }
+        
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-stone);
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--light-stone);
+        }
+        
+        .nav-link.active {
+            background-color: var(--wood);
+            color: var(--accent-gold);
+        }
+        
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .hamburger span {
+            height: 3px;
+            width: 25px;
+            background-color: var(--accent-gold);
+            margin: 3px 0;
+            transition: all 0.3s;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+        
+        /* Container */
+        .container {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--wood);
+            padding-bottom: 1rem;
+        }
+        
+        .header h1 {
+            color: var(--accent-gold);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        /* Product Styles */
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background-color: var(--wood);
+            color: var(--text-light);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 6px 6px 0 0;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid var(--wood);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .product {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+            background-color: var(--stone);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--light-wood);
+        }
+        
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(139, 69, 19, 0.4);
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            margin: 0.5rem 0;
+            font-weight: bold;
+        }
+        
+        .product-details {
+            padding: 0 1rem 1rem;
+            flex-grow: 1;
+        }
+        
+        .product-actions {
+            margin-top: auto;
+            padding: 0 1rem 1rem;
+        }
+        
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .category-tab {
+            padding: 0.5rem 1rem;
+            background-color: var(--stone);
+            border: 1px solid var(--wood);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-light);
+        }
+        
+        .category-tab.active {
+            background-color: var(--wood);
+            color: var(--accent-gold);
+        }
+        
+        .category-tab:hover {
+            background-color: var(--light-wood);
+        }
+        
+        /* Custom product form styles */
+        .custom-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .custom-form input {
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--wood);
+            background-color: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        
+        .custom-form button {
+            background-color: var(--wood);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .custom-form button:hover {
+            background-color: var(--light-wood);
+        }
+        
+        /* Button styles */
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            color: white;
+            background-color: var(--wood);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--light-wood);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        /* Info Boxes */
+        .how-to-buy, .important-note {
+            background-color: rgba(139, 69, 19, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--wood);
+        }
+        
+        .important-note {
+            background-color: rgba(139, 0, 0, 0.2);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .how-to-buy ol {
+            padding-left: 1.5rem;
+        }
+        
+        .how-to-buy li {
+            margin-bottom: 0.8rem;
+        }
+        
+        /* Payment Popup Styles */
+        .payment-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .payment-popup.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .payment-content {
+            background-color: var(--stone);
+            border: 2px solid var(--wood);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            animation: popupIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            box-shadow: 0 0 30px rgba(139, 69, 19, 0.5);
+        }
+        
+        @keyframes popupIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .close-popup {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .payment-steps {
+            margin: 1.5rem 0;
+        }
+        
+        .payment-step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background-color: var(--wood);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+        
+        .payment-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .btn-understand {
+            background-color: var(--success);
+        }
+        
+        .btn-confused {
+            background-color: var(--danger);
+        }
+        
+        .highlight {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+        
+        .warning-box {
+            background-color: rgba(139, 0, 0, 0.2);
+            border-left: 4px solid var(--danger);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--stone);
+            margin-top: 2rem;
+            border-top: 3px solid var(--wood);
+        }
+        
+        /* Responsive */
+        @media (min-width: 768px) {
+            .hamburger {
+                display: none;
+            }
+            
+            .nav-links {
+                display: flex;
+                position: static;
+                flex-direction: row;
+                width: auto;
+                background-color: transparent;
+                border: none;
+            }
+            
+            .nav-link {
+                border-bottom: none;
+                margin-left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h4>JGANK REALM</h4>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="shop.html" class="nav-link active">Shop</a>
+            <a href="info.html" class="nav-link">Info</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="header">
+            <h1>JGANK REALM Shop</h1>
+            <p style="color: whitesmoke;">Tingkatkan pengalaman bermain Anda dengan membeli beberapa item seperti coin, xp, atau kit.</p>
+            
+            <div class="how-to-buy">
+                <h3>Gimana sih cara beli di JGANK store lewat forum nya?</h3>
+                <ol>
+                    <li>Klik tombol buy / beli di bagian produk nya</li>
+                    <li>Pembeli akan di arah kan ke halaman saweria admin, untuk pembayaran nya</li>
+                    <li>Di bagian pesan ada informasi pembelian seperti:
+                        <ul>
+                            <li><strong>GAMERTAG</strong> : (harus lengkap dan sama persis)</li>
+                            <li><strong>PRODUK YANG DI BELI</strong> : (contoh 200 zmc)</li>
+                        </ul>
+                    </li>
+                    <li>Jika sudah melakukan pembayaran jangan lupa di ss (screenshot) lalu kirim buktinya ke:
+                        <div style="margin-top: 1rem;">
+                            <a href="https://wa.me/6281572621480" class="btn btn-block">Kirim Bukti ke WhatsApp</a>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+            
+            <div class="important-note">
+                <p style="color: whitesmoke;"><strong>PERHATIAN PENTING:</strong> Jika produk yang di beli tidak sesuai dengan harga yang ada di bayarkan akan di anggap <strong>DONASI UANG TIDAK AKAN DI KEMBALIKAN</strong>. Oleh karena itu jangan iseng atau coba-coba! ‼️</p>
+            </div>
+        </header>
+
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="all">Semua Produk</div>
+            <div class="category-tab" data-category="zmc">ZMC (Coin)</div>
+            <div class="category-tab" data-category="kit">Kit</div>
+            <div class="category-tab" data-category="xp">XP</div>
+        </div>
+
+        <!-- ZMC Products -->
+        <div class="card" id="zmc-section">
+            <h2>ZMC (Mata Uang Realm)</h2>
+            <div class="product-grid">
+                <!-- Standard ZMC Products -->
+                <div class="product" data-category="zmc">
+                    <span class="product-badge">ZMC</span>
+                    <img src="img/products/zmc.png" alt="2000 ZMC" class="product-image">
+                    <div class="product-details">
+                        <h3>2000 ZMC</h3>
+                        <p>Mata uang dasar untuk transaksi di realm</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp1.000</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:2000 ZMC" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <div class="product" data-category="zmc">
+                    <span class="product-badge">ZMC</span>
+                    <img src="img/products/zmc.png" alt="4000 ZMC" class="product-image">
+                    <div class="product-details">
+                        <h3>4000 ZMC</h3>
+                        <p>Paket dengan nilai terbaik</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp2.000</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:4000 ZMC" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <div class="product" data-category="zmc">
+                    <span class="product-badge">ZMC</span>
+                    <img src="img/products/zmc.png" alt="6000 ZMC" class="product-image">
+                    <div class="product-details">
+                        <h3>6000 ZMC</h3>
+                        <p>Untuk kebutuhan jangka panjang</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp3.000</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:6000 ZMC" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Custom ZMC Product -->
+                <div class="product" data-category="zmc">
+                    <span class="product-badge">ZMC CUSTOM</span>
+                    <img src="img/products/zmc.png" alt="Custom ZMC" class="product-image">
+                    <div class="product-details">
+                        <h3>Custom ZMC</h3>
+                        <p>Pesan jumlah ZMC sesuai kebutuhan Anda</p>
+                        <div class="custom-form">
+                            <input type="number" id="zmcAmount" min="2000" step="2000" placeholder="Masukkan jumlah ZMC (kelipatan 2, contoh: 2000-4000 )" required>
+                            <p class="price" id="zmcPrice">Rp0</p>
+                            <button id="calculateZmc">Hitung Harga</button>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="#" id="buyCustomZmc" class="btn btn-block buy-now disabled" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kit Products -->
+        <div class="card" id="kit-section">
+            <h2>Kit Peralatan</h2>
+            <div class="product-grid">
+                <div class="product" data-category="kit">
+                    <span class="product-badge">KIT</span>
+                    <img src="img/products/kit-starter.jpg" alt="Starter Kit" class="product-image">
+                    <div class="product-details">
+                        <h3>Starter Kit</h3>
+                        <p>Peralatan dasar untuk pemula yang berbeda dari starter kit yang gratis dari realms</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp3.500</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:Starter Kit" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <div class="product" data-category="kit">
+                    <span class="product-badge">KIT</span>
+                    <img src="img/products/kit-miner.jpg" alt="Miner Kit" class="product-image">
+                    <div class="product-details">
+                        <h3>Miner Kit</h3>
+                        <p>Peralatan tambang lengkap</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp4.000</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:Miner Kit" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <div class="product" data-category="kit">
+                    <span class="product-badge">KIT</span>
+                    <img src="img/products/kit-pvp.jpg" alt="PVP Kit" class="product-image">
+                    <div class="product-details">
+                        <h3>PVP Kit</h3>
+                        <p>Senjata dan armor terbaik untuk PVP</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp12.000</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:PVP Kit" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- XP Products -->
+        <div class="card" id="xp-section">
+            <h2>XP Boost</h2>
+            <div class="product-grid">
+                <!-- Standard XP Products -->
+                <div class="product" data-category="xp">
+                    <span class="product-badge">XP</span>
+                    <img src="img/products/xp.png" alt="200 XP" class="product-image">
+                    <div class="product-details">
+                        <h3>200 XP</h3>
+                        <p>Tingkatkan level Anda dengan cepat</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp1.000</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:200 XP" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <div class="product" data-category="xp">
+                    <span class="product-badge">XP</span>
+                    <img src="img/products/xp.png" alt="400 XP" class="product-image">
+                    <div class="product-details">
+                        <h3>400 XP</h3>
+                        <p>Paket dengan nilai terbaik</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp2.000</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:400 XP" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <div class="product" data-category="xp">
+                    <span class="product-badge">XP</span>
+                    <img src="img/products/xp.png" alt="600 XP" class="product-image">
+                    <div class="product-details">
+                        <h3>600 XP</h3>
+                        <p>Untuk kebutuhan jangka panjang</p>
+                    </div>
+                    <div class="product-actions">
+                        <p class="price">Rp3.000</p>
+                        <a href="https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:600 XP" 
+                           class="btn btn-block buy-now" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Custom XP Product -->
+                <div class="product" data-category="xp">
+                    <span class="product-badge">XP CUSTOM</span>
+                    <img src="img/products/xp.png" alt="Custom XP" class="product-image">
+                    <div class="product-details">
+                        <h3>Custom XP</h3>
+                        <p>Pesan jumlah XP sesuai kebutuhan Anda</p>
+                        <div class="custom-form">
+                            <input type="number" id="xpAmount" min="200" step="200" placeholder="Masukkan jumlah XP (kelipatan 2, contoh : 200-400)" required>
+                            <p class="price" id="xpPrice">Rp0</p>
+                            <button id="calculateXp">Hitung Harga</button>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="#" id="buyCustomXp" class="btn btn-block buy-now disabled" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 JGANK REALM. Hak cipta dilindungi.</p>
+        <p>Tidak berafiliasi dengan Mojang atau Microsoft.</p>
+    </footer>
+    
+    <div class="payment-popup" id="paymentPopup">
+        <div class="payment-content">
+            <button class="close-popup" id="closePopup">&times;</button>
+            <h2>Cara Pembayaran</h2>
+            <p>Ikuti langkah-langkah berikut untuk menyelesaikan pembelian:</p>
+            
+            <div class="payment-steps">
+                <div class="payment-step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>Klik Tombol "Beli Sekarang"</h3>
+                        <p>Anda akan diarahkan ke halaman pembayaran Saweria.</p>
+                    </div>
+                </div>
+                
+                <div class="payment-step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>Isi Form Pembayaran</h3>
+                        <p>Pastikan mengisi dengan informasi yang benar:</p>
+                        <ul>
+                            <li><span class="highlight">GAMERTAG</span> (harus sama persis dengan di game)</li>
+                            <li><span class="highlight">Produk yang dibeli</span> (contoh: 2000 ZMC)</li>
+                        </ul>
+                        <img src="totor.jpg" alt="tutor">
+                    </div>
+                </div>
+                
+                <div class="payment-step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>Lakukan Pembayaran</h3>
+                        <p>Pilih metode pembayaran yang tersedia dan selesaikan transaksi.</p>
+                    </div>
+                </div>
+                
+                <div class="payment-step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h3>Konfirmasi Pembayaran</h3>
+                        <p>Screenshot bukti pembayaran dan kirim ke:</p>
+                        <div style="margin-top: 1rem;">
+                            <a href="https://wa.me/6281572621480" class="btn btn-block">Kirim Bukti ke WhatsApp</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <p><strong>PERHATIAN:</strong> Pastikan nominal pembayaran sesuai harga produk. Jika tidak sesuai, akan dianggap sebagai DONASI dan uang tidak dapat dikembalikan.</p>
+            </div>
+            
+            <div class="payment-actions">
+                <button class="btn btn-understand" id="understandBtn">Saya Mengerti</button>
+                <button class="btn btn-confused" id="confusedBtn">Saya Tidak Mengerti</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        
+        // Store product link temporarily
+        let currentProductLink = '';
+        
+        // Buy button click handler
+        document.querySelectorAll('.buy-now').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (!this.classList.contains('disabled')) {
+                    e.preventDefault();
+                    currentProductLink = this.href;
+                    document.getElementById('paymentPopup').classList.add('active');
+                }
+            });
+        });
+        
+        // Close popup
+        document.getElementById('closePopup').addEventListener('click', function() {
+            document.getElementById('paymentPopup').classList.remove('active');
+        });
+        
+        // Understand button
+        document.getElementById('understandBtn').addEventListener('click', function() {
+            window.location.href = currentProductLink;
+        });
+        
+        // Confused button
+        document.getElementById('confusedBtn').addEventListener('click', function() {
+            window.location.href = 'how-to-buy.html';
+        });
+        
+        // Close when clicking outside
+        document.getElementById('paymentPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        // Filter produk berdasarkan kategori
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update tab aktif
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const category = tab.dataset.category;
+                const sections = document.querySelectorAll('.card');
+                
+                if (category === 'all') {
+                    sections.forEach(section => {
+                        section.style.display = 'block';
+                        section.querySelectorAll('.product').forEach(product => {
+                            product.style.display = 'flex';
+                        });
+                    });
+                } else {
+                    sections.forEach(section => {
+                        if (section.id === `${category}-section`) {
+                            section.style.display = 'block';
+                            section.querySelectorAll('.product').forEach(product => {
+                                product.style.display = 'flex';
+                            });
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+        
+        // Custom ZMC calculation
+        document.getElementById('calculateZmc').addEventListener('click', function() {
+            const zmcAmount = parseInt(document.getElementById('zmcAmount').value);
+            if (isNaN(zmcAmount)) {
+                alert('Masukkan jumlah ZMC yang valid (kelipatan 2000)');
+                return;
+            }
+            
+            if (zmcAmount % 2000 !== 0) {
+                alert('Jumlah ZMC harus kelipatan 2000');
+                return;
+            }
+            
+            const price = zmcAmount / 2000 * 1000; // 2000 ZMC = 1k
+            document.getElementById('zmcPrice').textContent = `Rp${price.toLocaleString('id-ID')}`;
+            
+            // Update buy link
+            const buyLink = document.getElementById('buyCustomZmc');
+            buyLink.href = `https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:${zmcAmount} ZMC`;
+            buyLink.classList.remove('disabled');
+        });
+        
+        // Custom XP calculation
+        document.getElementById('calculateXp').addEventListener('click', function() {
+            const xpAmount = parseInt(document.getElementById('xpAmount').value);
+            if (isNaN(xpAmount)) {
+                alert('Masukkan jumlah XP yang valid (kelipatan 200)');
+                return;
+            }
+            
+            if (xpAmount % 200 !== 0) {
+                alert('Jumlah XP harus kelipatan 200');
+                return;
+            }
+            
+            const price = xpAmount / 200 * 1000; // 200 XP = 1k
+            document.getElementById('xpPrice').textContent = `Rp${price.toLocaleString('id-ID')}`;
+            
+            // Update buy link
+            const buyLink = document.getElementById('buyCustomXp');
+            buyLink.href = `https://saweria.co/NERVA17?message=GAMERTAG:[isi gamertag],PRODUK:${xpAmount} XP`;
+            buyLink.classList.remove('disabled');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Lost - Minecraft</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        :root {
+            --mc-dark-green: #5b8c3c;
+            --mc-light-green: #7cba4a;
+            --mc-brown: #6b4f3a;
+            --mc-dark-brown: #4a3a2a;
+            --mc-red: #b02e26;
+            --mc-dark-red: #8c1f1a;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            background-image: url('https://blockworks.co/wp-content/uploads/2022/08/minecraft-dirt-block-1.jpg');
+            background-size: 200px;
+            image-rendering: pixelated;
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+        
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 8px solid var(--mc-brown);
+            border-image: repeating-linear-gradient(45deg, var(--mc-brown), var(--mc-dark-brown) 10px) 10;
+            padding: 30px;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            color: var(--mc-red);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            animation: glow 2s infinite alternate;
+        }
+        
+        .steve {
+            width: 100px;
+            height: 100px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="16" y="16" width="32" height="32" fill="%23333"/><rect x="16" y="0" width="32" height="16" fill="%23333"/><rect x="0" y="16" width="16" height="32" fill="%23333"/><rect x="48" y="16" width="16" height="32" fill="%23333"/><rect x="16" y="48" width="32" height="16" fill="%23333"/><rect x="16" y="0" width="32" height="8" fill="%237cba4a"/><rect x="0" y="16" width="16" height="8" fill="%237cba4a"/><rect x="48" y="16" width="16" height="8" fill="%237cba4a"/></svg>');
+            image-rendering: pixelated;
+            margin: 0 auto 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .message {
+            margin: 20px 0;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+        
+        .reconnect {
+            background-color: var(--mc-red);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--mc-dark-red);
+            box-shadow: 0 5px 0 var(--mc-dark-red);
+            transition: all 0.1s;
+        }
+        
+        .reconnect:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 0 var(--mc-dark-red);
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .block {
+            width: 16px;
+            height: 16px;
+            background-color: var(--mc-light-green);
+            margin: 0 5px;
+            image-rendering: pixelated;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        .block:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .block:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .block:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        
+        .block:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+        
+        .world-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .world-border::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+        }
+        
+        .world-border::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 5px var(--mc-red), 0 0 10px var(--mc-red); }
+            to { text-shadow: 0 0 10px var(--mc-red), 0 0 20px var(--mc-red); }
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .message {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="world-border"></div>
+    
+    <div class="container">
+        <div class="steve"></div>
+        <h1>CONNECTION LOST!</h1>
+        
+        <div class="message">
+            <p>THE ENDER CONNECTION HAS BEEN DISRUPTED!</p>
+            <p>CREEPERS MUST HAVE BLOWN UP OUR REDSTONE WIRES...</p>
+        </div>
+        
+        <div class="loading">
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+            <div class="block"></div>
+        </div>
+        
+        <p class="message">ATTEMPTING TO RECONNECT TO THE SERVER...</p>
+        
+        <button class="reconnect" onclick="window.location.reload()">TRY AGAIN</button>
+    </div>
+
+    <script>
+        // Auto-reconnect when back online
+        window.addEventListener('online', () => {
+            const message = document.createElement('div');
+            message.textContent = 'CONNECTION RESTORED! RETURNING TO OVERWORLD...';
+            message.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 0;
+                right: 0;
+                background: var(--mc-dark-green);
+                color: white;
+                padding: 15px;
+                text-align: center;
+                font-family: 'Press Start 2P', cursive;
+                z-index: 1000;
+                animation: slideUp 0.5s ease-out;
+            `;
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        });
+
+        // Periodic connection check
+        setInterval(() => {
+            if(navigator.onLine) {
+                window.location.href = 'index.html';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

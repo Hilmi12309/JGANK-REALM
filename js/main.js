@@ -164,3 +164,37 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', animateOnScroll);
     animateOnScroll(); // Run once on load
 });
+// Daftarkan Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+
+// Deteksi perubahan koneksi
+function handleConnectionChange() {
+  if (navigator.onLine) {
+    // Kirim pesan ke Service Worker bahwa online
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage('online');
+    }
+    
+    // Jika sedang di off.html, redirect ke index.html
+    if (window.location.pathname.endsWith('off.html')) {
+      window.location.href = 'index.html';
+    }
+  }
+}
+
+// Setup event listeners
+window.addEventListener('online', handleConnectionChange);
+window.addEventListener('offline', () => {
+  if (!window.location.pathname.endsWith('off.html')) {
+    window.location.href = 'off.html';
+  }
+});
+
+// Cek status saat pertama kali load
+if (!navigator.onLine && !window.location.pathname.endsWith('off.html')) {
+  window.location.href = 'off.html';
+}
